@@ -10,12 +10,11 @@ const Table = () => {
         strokeWidth: 2,
     };
 
-    const centerY = -window.innerHeight / 2;
     const radius = 250;
 
     return (
         <rect
-            x={-tableWidth / 2} y={centerY - (tableHeight / 2) + 50}
+            x={-tableWidth / 2} y={225}
             rx={radius} ry={radius}
             width={tableWidth} height={tableHeight}
             style={style}

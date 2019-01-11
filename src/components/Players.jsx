@@ -1,24 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {tableWidth} from "../utils/constants";
+import {gameHeight, tableWidth} from "../utils/constants";
 import Player from "./Player";
 
 
 const Players = (props) => {
     const excessWidth = tableWidth / 2;
 
-    const coordinates = [[-excessWidth - 65, -window.innerHeight + 750], [-excessWidth - 125, -window.innerHeight + 475],
-        [-excessWidth, -window.innerHeight + 200], [0, -window.innerHeight + 150], [excessWidth, -window.innerHeight + 200],
-        [excessWidth + 125, -window.innerHeight + 475], [excessWidth + 65, -window.innerHeight + 750]];
+    const bottomPlayerYCoordinate = gameHeight - 300;
+    const middlePlayerYCoordinate = gameHeight - 525;
+    const cornerPlayerYCoordinate = gameHeight - 775;
+    const topPlayerYCoordinate = gameHeight - 825;
+
+    const coordinates = [[-excessWidth - 125, bottomPlayerYCoordinate], [-excessWidth - 125, middlePlayerYCoordinate],
+                         [-excessWidth, cornerPlayerYCoordinate], [0, topPlayerYCoordinate],
+                         [excessWidth, cornerPlayerYCoordinate], [excessWidth + 125, middlePlayerYCoordinate],
+                         [excessWidth + 125, bottomPlayerYCoordinate]];
 
     return (
         <g>
             { props.players.map((player, index) => (
-                <Player xCoordinate={coordinates[index][0]} yCoordinate={coordinates[index][1]} player={player} />
+                <Player xCoordinate={coordinates[index][0]} yCoordinate={coordinates[index][1]} player={player}/>
             )) }
         </g>
     );
 };
+
 
 
 Players.propTypes = {
