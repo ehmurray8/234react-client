@@ -20,7 +20,8 @@ const Players = (props) => {
     return (
         <g>
             { props.players.map((player, index) => (
-                <Player xCoordinate={coordinates[index][0]} yCoordinate={coordinates[index][1]} player={player}/>
+                <Player key={player.name} xCoordinate={coordinates[index][0]} yCoordinate={coordinates[index][1]}
+                        player={player}/>
             )) }
         </g>
     );

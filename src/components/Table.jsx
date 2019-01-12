@@ -1,11 +1,11 @@
 import React from 'react';
-import {feltColor} from "../utils/settings";
+import Settings from '../utils/settings';
 import {tableHeight, tableWidth} from "../utils/constants";
 
 
 const Table = () => {
     const style = {
-        fill: feltColor,
+        fill: Settings.feltColor,
         stroke: 'black',
         strokeWidth: 2,
     };

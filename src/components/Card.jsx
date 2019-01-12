@@ -12,7 +12,6 @@ const Card = (props) => {
         identifier = getIdentifier(card);
     }
 
-    const height = playerBoxHeight * 2;
 
     const xCoordinate = props.xCoordinate + 7;
     const yCoordinate = props.yCoordinate - playerBoxHeight - 7;
@@ -24,7 +23,7 @@ const Card = (props) => {
                     <image xlinkHref={imageUrl} preserveAspectRatio="none" width={1} height={1} />
                 </pattern>
             </defs>
-            <rect x={xCoordinate} y={yCoordinate} height={height} width={props.width} fill={"url(#attachedImage" + identifier + ")"}/>
+            <rect x={xCoordinate} y={yCoordinate} height={props.height} width={props.width} fill={"url(#attachedImage" + identifier + ")"}/>
         </g>
     );
 };
@@ -48,6 +47,7 @@ Card.propTypes = {
     xCoordinate: PropTypes.number.isRequired,
     yCoordinate: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
 };
 
 

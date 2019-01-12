@@ -5,3 +5,12 @@ export const gameWidth = 1750;
 
 export const playerBoxHeight = 100;
 export const playerBoxWidth = 250;
+
+export const OptionTypes = {
+    CHECK: "check",
+    FOLD: "fold",
+    CALL: "call",
+    BET: "bet",
+    RAISE: "raise",
+    ALLIN: "allin",
+};
