@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Settings from "../utils/settings";
 import {OptionTypes} from "../utils/constants";
+import performAction from '../performAction';
 
 
 const Option = (props) => {
@@ -37,18 +38,18 @@ const Option = (props) => {
     return (
         <g>
             <rect x={props.xCoordinate} y={props.yCoordinate} height={height} width={width} rx={radius}
-                  ry={radius} style={backgroundStyle} onClick={() => props.option.clickFunction(optionAmount)}/>
+                  ry={radius} style={backgroundStyle} onClick={() => performAction(props.option.type, optionAmount)}/>
             { amountTextBox &&
                 <text x={props.xCoordinate + 15} y={props.yCoordinate + 50} style={textStyle}
-                      onClick={() => props.option.clickFunction(optionAmount)}>{optionTypeString}</text>
+                      onClick={() => performAction(props.option.type, optionAmount)}>{optionTypeString}</text>
             }
             { amountTextBox &&
                 <text x={props.xCoordinate + 15} y={props.yCoordinate + 80} style={textStyle}
-                      onClick={() => props.option.clickFunction(optionAmount)}>{"$" + optionAmount}</text>
+                      onClick={() => performAction(props.option.type, optionAmount)}>{"$" + optionAmount}</text>
             }
             { !amountTextBox &&
                 <text x={props.xCoordinate + 15} y={props.yCoordinate + 50} style={textStyle}
-                      onClick={() => props.option.clickFunction(optionAmount)}>{optionTypeString}</text>
+                      onClick={() => performAction(props.option.type, optionAmount)}>{optionTypeString}</text>
             }
         </g>
     );
@@ -65,7 +66,6 @@ Option.propTypes = {
     option: PropTypes.shape({
         amount: PropTypes.number.isRequired,
         type: PropTypes.string.isRequired,
-        clickFunction: PropTypes.func.isRequired,
     }).isRequired,
     xCoordinate: PropTypes.number.isRequired,
     yCoordinate: PropTypes.number.isRequired,

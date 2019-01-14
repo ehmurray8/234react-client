@@ -17,7 +17,7 @@ const CommunityCards = (props) => {
         <g>
             { props.cards.map((card, index) =>
                 <Card key={card.rank + card.suit} card={card} xCoordinate={firstXCoordinate + width * index + spacing[index]}
-                      yCoordinate={yCoordinate} width={width} height={height}/>)
+                      yCoordinate={yCoordinate} width={width} height={height} raiseCard={props.raiseCards[index]}/>)
             }
         </g>
     );
@@ -29,6 +29,7 @@ CommunityCards.propTypes = {
         rank: PropTypes.string.isRequired,
         suit: PropTypes.string.isRequired,
     })).isRequired,
+    raiseCards: PropTypes.arrayOf(PropTypes.bool.isRequired).isRequired,
 };
 
 

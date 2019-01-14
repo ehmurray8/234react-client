@@ -59,7 +59,7 @@ class UserOptions extends Component {
                     </foreignObject>
                 }
                 <OptionButtons options={this.props.options} yCoordinate={yCoordinate} xCoordinate={xCoordinate}
-                               width={width} update={this.updateObject}/>
+                               width={width} update={this.updateObject} clickFunction={this.state.clickFunction}/>
             </g>
         );
     }

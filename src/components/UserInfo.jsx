@@ -14,7 +14,7 @@ const UserInfo = (props) => {
 
     return (
        <g>
-           <rect x={xCoordinate} y={yCoordinate} height={175} width={350} fill={Settings.mainBackgroundColor}/>
+           <rect x={xCoordinate} y={yCoordinate} height={175} width={400} fill={Settings.mainBackgroundColor}/>
            <text x={xCoordinate + 25} y={yCoordinate + 50} style={style}>{props.username}</text>
            <text x={xCoordinate + 25} y={yCoordinate + 125} style={style}>{"$" + props.stackSize}</text>
        </g>

@@ -12,9 +12,19 @@ const Card = (props) => {
         identifier = getIdentifier(card);
     }
 
-
     const xCoordinate = props.xCoordinate + 7;
-    const yCoordinate = props.yCoordinate - playerBoxHeight - 7;
+    let yCoordinate = props.yCoordinate - playerBoxHeight - 7;
+
+    if (props.raiseCard) {
+        yCoordinate -= 25;
+    }
+
+    let style = {};
+    if (props.foldedCard) {
+        style = {
+            opacity: .5,
+        };
+    }
 
     return (
         <g>
@@ -23,7 +33,8 @@ const Card = (props) => {
                     <image xlinkHref={imageUrl} preserveAspectRatio="none" width={1} height={1} />
                 </pattern>
             </defs>
-            <rect x={xCoordinate} y={yCoordinate} height={props.height} width={props.width} fill={"url(#attachedImage" + identifier + ")"}/>
+            <rect x={xCoordinate} y={yCoordinate} height={props.height} width={props.width}
+                  fill={"url(#attachedImage" + identifier + ")"} style={style}/>
         </g>
     );
 };
@@ -48,6 +59,8 @@ Card.propTypes = {
     yCoordinate: PropTypes.number.isRequired,
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
+    raiseCard: PropTypes.bool,
+    foldedCard: PropTypes.bool,
 };
 
 

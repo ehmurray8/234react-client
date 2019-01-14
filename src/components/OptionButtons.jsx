@@ -11,7 +11,6 @@ class OptionButtons extends Component {
             ...props,
         };
         this.state.update.updateFunction = () => {
-            console.log("Update");
             this.setState(this.state);
         }
     }
@@ -39,7 +38,6 @@ OptionButtons.propTypes = {
     options: PropTypes.arrayOf(PropTypes.shape({
         amount: PropTypes.number.isRequired,
         type: PropTypes.string.isRequired,
-        clickFunction: PropTypes.func.isRequired,
     })),
     update: PropTypes.shape({
         updateFunction: PropTypes.func.isRequired,

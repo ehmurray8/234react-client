@@ -8,7 +8,7 @@ const Pot = (props) => {
 
     const width = 175;
     const height = 120;
-    const yCoordinate = 275;
+    const yCoordinate = 310;
 
     const style = {
         font: "bold 30px sans-serif",
