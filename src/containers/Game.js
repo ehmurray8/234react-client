@@ -4,6 +4,7 @@ import App from '../App';
 
 const mapStateToProps = state => ({
     gameState: state.gameState,
+    navigationSettings: state.navigationSettings,
 });
 
 

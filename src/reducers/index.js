@@ -30,7 +30,6 @@ const gameState = {
         {type: OptionTypes.RAISE, amount: 4},
         {type: OptionTypes.ALLIN, amount: userStackSize},
     ],
-    optionOnClick: (amount, type) => optionClickHandler(amount, type),
     raiseCommunityCards: [true, false, true, false, true],
     raiseUserCards: [false, false, false, false],
     userHasFolded: true,
@@ -39,13 +38,16 @@ const gameState = {
 };
 
 
-function optionClickHandler(amount, type) {
-    console.log(type + ": " + amount);
-}
+const navigationSettings = {
+    inGame: false,
+    isPlaying: false,
+    isSpectator: false,
+};
 
 
 const testState = {
     gameState: gameState,
+    navigationSettings: navigationSettings,
 };
 
 

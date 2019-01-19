@@ -2,11 +2,41 @@ import React, { Component } from 'react';
 import './App.css';
 import PropTypes from 'prop-types';
 import Canvas from "./components/Canvas";
+import * as Auth0 from 'auth0-web';
+import io from 'socket.io-client';
+
+
+Auth0.configure({
+    domain: 'ehmurray.auth0.com',
+    clientID: 'Dw46VpZuEtCmd7NUjwfYGAsKg3KJu35p',
+    redirectUri: 'http://localhost:3000/',
+    responseType: 'token id_token',
+    scope: 'openid profile manage:points',
+    audience: 'http://234-poker.com'
+});
 
 
 class App extends Component {
 
     componentDidMount() {
+        Auth0.handleAuthCallback();
+
+        Auth0.subscribe((auth) => {
+            if (!auth) return;
+
+            const playerProfile = Auth0.getProfile();
+            const currentPlayer = {
+                id: playerProfile.sub,
+                name: playerProfile.name,
+            };
+
+            // this.props.loggedIn(currentPlayer);
+
+            const socket = io('http://localhost:3001', {
+                query: `token=${Auth0.getAccessToken()}`,
+            });
+        });
+
         // Allows the app to be responsive to window size changes
         window.onresize = () => {
             const canvas = document.getElementById('main-canvas');
@@ -18,7 +48,7 @@ class App extends Component {
 
     render() {
         return (
-            <Canvas gameState={this.props.gameState}/>
+            <Canvas gameState={this.props.gameState} navigationSettings={this.props.navigationSettings}/>
         );
     }
 }
@@ -54,6 +84,11 @@ App.propTypes = {
         userHasFolded: PropTypes.bool.isRequired,
         decisionTimeMaxSeconds: PropTypes.number.isRequired,
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
+    }).isRequired,
+    navigationSettings: PropTypes.shape({
+        inGame: PropTypes.bool.isRequired,
+        isPlaying: PropTypes.bool.isRequired,
+        isSpectator: PropTypes.bool.isRequired,
     }).isRequired,
 };
 

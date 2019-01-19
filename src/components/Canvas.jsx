@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Settings from '../utils/settings';
-import Table from './Table';
+import {signIn} from 'auth0-web'; import Table from './Table';
 import Players from "./Players";
 import {gameHeight, gameWidth} from "../utils/constants";
 import CommunityCards from "./CommunityCards";
@@ -10,6 +10,7 @@ import UserCards from "./UserCards";
 import UserInfo from "./UserInfo";
 import UserOptions from "./UserOptions";
 import TimeBar from "./TimeBar";
+import Login from "./Login";
 
 
 const Canvas = (props) => {
@@ -27,16 +28,36 @@ const Canvas = (props) => {
             style={style}
             viewBox={viewBox}
         >
-            <Table />
-            { props.gameState.mainPotAmount > 0 &&
+            <defs>
+                <filter id="shadow">
+                    <feDropShadow dx="1" dy="1" stdDeviation="2" />
+                </filter>
+            </defs>
+            { props.navigationSettings.inGame &&
+
+                <Table/>
+            }
+            { props.gameState.mainPotAmount > 0 && props.navigationSettings.inGame &&
                 <Pot mainPotAmount={gameState.mainPotAmount}/>
             }
-            <Players players={gameState.players} lastActionAmounts={gameState.lastActionAmounts}/>
-            <CommunityCards cards={gameState.communityCards} raiseCards={gameState.raiseCommunityCards}/>
-            <UserCards cards={gameState.userCards} raiseCards={gameState.raiseUserCards} foldedCard={gameState.userHasFolded} lastActionAmount={100}/>
-            <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
-            <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}/>
-            <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
+            { props.navigationSettings.inGame &&
+                <g>
+                    <Players players={gameState.players} lastActionAmounts={gameState.lastActionAmounts}/>
+                    <CommunityCards cards={gameState.communityCards} raiseCards={gameState.raiseCommunityCards}/>
+                </g>
+            }
+            { props.navigationSettings.isPlaying &&
+                <g>
+                    <UserCards cards={gameState.userCards} raiseCards={gameState.raiseUserCards}
+                               foldedCard={gameState.userHasFolded} lastActionAmount={100}/>
+                    <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
+                    <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}/>
+                    <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
+                </g>
+            }
+            { !props.navigationSettings.inGame &&
+                <Login authenticate={signIn} />
+            }
         </svg>
     );
 };
@@ -71,6 +92,11 @@ Canvas.propTypes = {
         userHasFolded: PropTypes.bool.isRequired,
         decisionTimeMaxSeconds: PropTypes.number.isRequired,
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
+    }).isRequired,
+    navigationSettings: PropTypes.shape({
+        inGame: PropTypes.bool.isRequired,
+        isPlaying: PropTypes.bool.isRequired,
+        isSpectator: PropTypes.bool.isRequired,
     }).isRequired,
 };
 
