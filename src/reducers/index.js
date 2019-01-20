@@ -1,9 +1,11 @@
 import {OptionTypes} from "../utils/constants";
+import {GAME_UPDATE, JOIN_GAME, LOGGED_IN} from "../actions";
+import gameUpdate from "./gameUpdate";
 
 const defaultCards = [null, null];
 const userStackSize = 250;
 
-const gameState = {
+const testGameState = {
     players : [
         {name: "Player 2", balance: 100, cards: [{rank: "ace", suit: "clubs"}, {rank: "ace", suit: "diamonds"},
                                                  {rank: "2", suit: "clubs"}, {rank: "3", suit: "clubs"}],
@@ -30,6 +32,7 @@ const gameState = {
         {type: OptionTypes.RAISE, amount: 4},
         {type: OptionTypes.ALLIN, amount: userStackSize},
     ],
+    lastUserAmount: 100,
     raiseCommunityCards: [true, false, true, false, true],
     raiseUserCards: [false, false, false, false],
     userHasFolded: true,
@@ -37,8 +40,25 @@ const gameState = {
     lastActionAmounts: [100, 100, 100, 100, 100, 100, 100],
 };
 
+const initialGameState = {
+    players : [],
+    communityCards: [],
+    mainPotAmount: 0,
+    userCards: [],
+    userStackSize: 0,
+    username: "",
+    options: [],
+    lastUserAmount: 0,
+    raiseCommunityCards: [],
+    raiseUserCards: [],
+    userHasFolded: false,
+    decisionTimeMaxSeconds: 0,
+    lastActionAmounts: [],
+};
 
-const navigationSettings = {
+
+
+const initialNavigationSettings = {
     loggedIn: false,
     inGame: false,
     isPlaying: false,
@@ -46,14 +66,49 @@ const navigationSettings = {
 };
 
 
+// eslint-disable-next-line
 const testState = {
-    gameState: gameState,
-    navigationSettings: navigationSettings,
+    gameState: testGameState,
+    navigationSettings: initialNavigationSettings,
 };
 
 
-function reducer(state = testState) {
-    return state;
+const initialState = {
+    gameState: initialGameState,
+    navigationSettings: initialNavigationSettings,
+};
+
+
+function reducer(state = initialState, action) {
+    switch (action.type) {
+        case LOGGED_IN:
+            return {
+                gameState: {
+                    ...state.gameState,
+                    username: action.player.username,
+                },
+                navigationSettings: {
+                    ...state.navigationSettings,
+                    loggedIn: true,
+                },
+                currentPlayer: action.player,
+                socket: action.socket,
+            };
+        case JOIN_GAME:
+            state.socket.emit("joinGame", state.currentPlayer);
+            return {
+                ...state,
+                navigationSettings: {
+                    ...state.navigationSettings,
+                    inGame: true,
+                    isPlaying: true,
+                },
+            };
+        case GAME_UPDATE:
+            return gameUpdate(state, action);
+        default:
+            return state;
+    }
 }
 
 export default reducer;

@@ -14,3 +14,6 @@ export const OptionTypes = {
     RAISE: "raise",
     ALLIN: "allin",
 };
+
+
+export const SERVER_URL = 'http://localhost:3001';

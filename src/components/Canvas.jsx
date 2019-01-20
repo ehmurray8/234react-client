@@ -23,21 +23,15 @@ class Canvas extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps);
+    }
+
     render() {
         const style = {
             border: '1px solid black',
             backgroundColor: Settings.backgroundColor,
         };
-
-
-        const self = this;
-        function joinGame() {
-            self.props.socket.emit("joinGame", self.props.currentPlayer);
-            self.props.navigationSettings.inGame = true;
-            self.props.navigationSettings.isPlaying = true;
-            self.setState({...self.props});
-        }
-
 
         const viewBox = [gameWidth / -2, 0, gameWidth, gameHeight];
         const gameState = this.state.gameState;
@@ -72,19 +66,19 @@ class Canvas extends Component {
                 { this.state.navigationSettings.isPlaying &&
                     <g>
                         <UserCards cards={gameState.userCards} raiseCards={gameState.raiseUserCards}
-                                   foldedCard={gameState.userHasFolded} lastActionAmount={100}/>
+                                   foldedCard={gameState.userHasFolded} lastActionAmount={gameState.lastUserAmount}/>
                         <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
                         <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}/>
                         <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
                     </g>
                 }
 
-                { !this.state.navigationSettings.inGame &&
+                { !this.state.navigationSettings.loggedIn &&
                     <Login authenticate={signIn}/>
                 }
 
                 { this.state.navigationSettings.loggedIn && ! this.state.navigationSettings.inGame &&
-                    <SelectGame joinGame={joinGame}/>
+                    <SelectGame joinGame={this.props.joinGame}/>
                 }
             </svg>
         );
@@ -117,6 +111,7 @@ Canvas.propTypes = {
             type: PropTypes.string.isRequired,
             amount: PropTypes.number.isRequired,
         })).isRequired,
+        lastUserAmount: PropTypes.number.isRequired,
         raiseCommunityCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         raiseUserCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         userHasFolded: PropTypes.bool.isRequired,
@@ -134,7 +129,10 @@ Canvas.propTypes = {
         id: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-    })
+    }),
+    loggedIn: PropTypes.func.isRequired,
+    joinGame: PropTypes.func.isRequired,
+    gameUpdate: PropTypes.func.isRequired,
 };
 
 

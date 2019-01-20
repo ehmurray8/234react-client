@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Canvas from "./components/Canvas";
 import * as Auth0 from 'auth0-web';
 import io from 'socket.io-client';
+import {SERVER_URL} from "./utils/constants";
 
 
 Auth0.configure({
@@ -25,24 +26,20 @@ class App extends Component {
             if (!auth) return;
 
             const playerProfile = Auth0.getProfile();
-            this.currentPlayer = {
+            const currentPlayer = {
                 id: playerProfile.sub,
                 name: playerProfile.name,
                 username: playerProfile.nickname,
             };
 
-            // this.props.loggedIn(currentPlayer);
-
-            this.socket = io('http://localhost:3001', {
+            const socket = io(SERVER_URL, {
                 query: `token=${Auth0.getAccessToken()}`,
             });
 
-            this.props.navigationSettings.loggedIn = true;
-            this.setState(this.props);
+            this.props.loggedIn(currentPlayer, socket);
         });
 
         // Allows the app to be responsive to window size changes
-
         window.onresize = () => {
             const canvas = document.getElementById('main-canvas');
             canvas.style.width = `${window.innerWidth}px`;
@@ -52,10 +49,13 @@ class App extends Component {
         window.onresize();
     }
 
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps);
+    }
+
     render() {
         return (
-            <Canvas gameState={this.props.gameState} navigationSettings={this.props.navigationSettings}
-                    socket={this.socket} currentPlayer={this.currentPlayer} />
+            <Canvas {...this.props} />
         );
     }
 }
@@ -86,6 +86,7 @@ App.propTypes = {
             type: PropTypes.string.isRequired,
             amount: PropTypes.number.isRequired,
         })).isRequired,
+        lastUserAmount: PropTypes.number.isRequired,
         raiseCommunityCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         raiseUserCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         userHasFolded: PropTypes.bool.isRequired,
@@ -98,6 +99,15 @@ App.propTypes = {
         isPlaying: PropTypes.bool.isRequired,
         isSpectator: PropTypes.bool.isRequired,
     }).isRequired,
+    currentPlayer: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        id: PropTypes.string.isRequired,
+    }),
+    socket: PropTypes.object,
+    loggedIn: PropTypes.func.isRequired,
+    joinGame: PropTypes.func.isRequired,
+    gameUpdate: PropTypes.func.isRequired,
 };
 
 
