@@ -39,6 +39,7 @@ const gameState = {
 
 
 const navigationSettings = {
+    loggedIn: false,
     inGame: false,
     isPlaying: false,
     isSpectator: false,

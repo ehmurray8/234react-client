@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Settings from '../utils/settings';
 import {signIn} from 'auth0-web'; import Table from './Table';
@@ -11,56 +11,86 @@ import UserInfo from "./UserInfo";
 import UserOptions from "./UserOptions";
 import TimeBar from "./TimeBar";
 import Login from "./Login";
+import SelectGame from "./SelectGame";
 
 
-const Canvas = (props) => {
-    const style = {
-        border: '1px solid black',
-        backgroundColor: Settings.backgroundColor,
-    };
+class Canvas extends Component {
 
-    const viewBox = [gameWidth / -2, 0, gameWidth, gameHeight];
-    const gameState = props.gameState;
-    return (
-        <svg
-            id="main-canvas"
-            preserveAspectRatio="xMaxYMax none"
-            style={style}
-            viewBox={viewBox}
-        >
-            <defs>
-                <filter id="shadow">
-                    <feDropShadow dx="1" dy="1" stdDeviation="2" />
-                </filter>
-            </defs>
-            { props.navigationSettings.inGame &&
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...props
+        };
+    }
 
-                <Table/>
-            }
-            { props.gameState.mainPotAmount > 0 && props.navigationSettings.inGame &&
-                <Pot mainPotAmount={gameState.mainPotAmount}/>
-            }
-            { props.navigationSettings.inGame &&
-                <g>
-                    <Players players={gameState.players} lastActionAmounts={gameState.lastActionAmounts}/>
-                    <CommunityCards cards={gameState.communityCards} raiseCards={gameState.raiseCommunityCards}/>
-                </g>
-            }
-            { props.navigationSettings.isPlaying &&
-                <g>
-                    <UserCards cards={gameState.userCards} raiseCards={gameState.raiseUserCards}
-                               foldedCard={gameState.userHasFolded} lastActionAmount={100}/>
-                    <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
-                    <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}/>
-                    <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
-                </g>
-            }
-            { !props.navigationSettings.inGame &&
-                <Login authenticate={signIn} />
-            }
-        </svg>
-    );
-};
+    render() {
+        const style = {
+            border: '1px solid black',
+            backgroundColor: Settings.backgroundColor,
+        };
+
+
+        const self = this;
+        function joinGame() {
+            self.props.socket.emit("joinGame", self.props.currentPlayer);
+            self.props.navigationSettings.inGame = true;
+            self.props.navigationSettings.isPlaying = true;
+            self.setState({...self.props});
+        }
+
+
+        const viewBox = [gameWidth / -2, 0, gameWidth, gameHeight];
+        const gameState = this.state.gameState;
+        return (
+            <svg
+                id="main-canvas"
+                preserveAspectRatio="xMaxYMax none"
+                style={style}
+                viewBox={viewBox}
+            >
+                <defs>
+                    <filter id="shadow">
+                        <feDropShadow dx="1" dy="1" stdDeviation="2"/>
+                    </filter>
+                </defs>
+
+                { this.state.navigationSettings.inGame &&
+                    <Table/>
+                }
+
+                { this.state.gameState.mainPotAmount > 0 && this.state.navigationSettings.inGame &&
+                    <Pot mainPotAmount={gameState.mainPotAmount}/>
+                }
+
+                { this.state.navigationSettings.inGame &&
+                    <g>
+                        <Players players={gameState.players} lastActionAmounts={gameState.lastActionAmounts}/>
+                        <CommunityCards cards={gameState.communityCards} raiseCards={gameState.raiseCommunityCards}/>
+                    </g>
+                }
+
+                { this.state.navigationSettings.isPlaying &&
+                    <g>
+                        <UserCards cards={gameState.userCards} raiseCards={gameState.raiseUserCards}
+                                   foldedCard={gameState.userHasFolded} lastActionAmount={100}/>
+                        <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
+                        <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}/>
+                        <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
+                    </g>
+                }
+
+                { !this.state.navigationSettings.inGame &&
+                    <Login authenticate={signIn}/>
+                }
+
+                { this.state.navigationSettings.loggedIn && ! this.state.navigationSettings.inGame &&
+                    <SelectGame joinGame={joinGame}/>
+                }
+            </svg>
+        );
+    }
+}
+
 
 Canvas.propTypes = {
     gameState: PropTypes.shape({
@@ -94,10 +124,17 @@ Canvas.propTypes = {
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
     }).isRequired,
     navigationSettings: PropTypes.shape({
+        loggedIn: PropTypes.bool.isRequired,
         inGame: PropTypes.bool.isRequired,
         isPlaying: PropTypes.bool.isRequired,
         isSpectator: PropTypes.bool.isRequired,
     }).isRequired,
+    socket: PropTypes.object,
+    currentPlayer: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+    })
 };
 
 

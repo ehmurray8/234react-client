@@ -25,30 +25,37 @@ class App extends Component {
             if (!auth) return;
 
             const playerProfile = Auth0.getProfile();
-            const currentPlayer = {
+            this.currentPlayer = {
                 id: playerProfile.sub,
                 name: playerProfile.name,
+                username: playerProfile.nickname,
             };
 
             // this.props.loggedIn(currentPlayer);
 
-            const socket = io('http://localhost:3001', {
+            this.socket = io('http://localhost:3001', {
                 query: `token=${Auth0.getAccessToken()}`,
             });
+
+            this.props.navigationSettings.loggedIn = true;
+            this.setState(this.props);
         });
 
         // Allows the app to be responsive to window size changes
+
         window.onresize = () => {
             const canvas = document.getElementById('main-canvas');
             canvas.style.width = `${window.innerWidth}px`;
             canvas.style.height = `${window.innerHeight}px`;
         };
+
         window.onresize();
     }
 
     render() {
         return (
-            <Canvas gameState={this.props.gameState} navigationSettings={this.props.navigationSettings}/>
+            <Canvas gameState={this.props.gameState} navigationSettings={this.props.navigationSettings}
+                    socket={this.socket} currentPlayer={this.currentPlayer} />
         );
     }
 }
@@ -86,6 +93,7 @@ App.propTypes = {
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
     }).isRequired,
     navigationSettings: PropTypes.shape({
+        loggedIn: PropTypes.bool.isRequired,
         inGame: PropTypes.bool.isRequired,
         isPlaying: PropTypes.bool.isRequired,
         isSpectator: PropTypes.bool.isRequired,
