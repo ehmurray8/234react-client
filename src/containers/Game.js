@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 import App from '../App';
-import {gameUpdate, joinGame, loggedIn} from "../actions";
+import {gameUpdate, joinGame, loggedIn, selectOption} from "../actions";
 
 
 const mapStateToProps = state => ({
-    gameState: state.gameState,
-    navigationSettings: state.navigationSettings,
+    ...state
 });
 
 
@@ -18,6 +17,9 @@ const mapDispatchToProps = dispatch => ({
     },
     gameUpdate: (payload) => {
         dispatch(gameUpdate(payload));
+    },
+    selectOption: (type, amount) => {
+        dispatch(selectOption(type, amount));
     },
 });
 

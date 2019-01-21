@@ -52,23 +52,23 @@ class UserOptions extends Component {
 
         return (
             <g>
-                {needSlider(this.state) &&
+                { needSlider(this.props) &&
                     <foreignObject x={xCoordinate} y={yCoordinate - 50} width={sliderWidth} height={sliderHeight}>
                         <input id='bet-slider' type="range" min={minValue} max={this.state.stackSize} step={this.state.stepSize}
                                style={sliderStyle} defaultValue={minValue} onChange={() => this.reload(this.state)}/>
                     </foreignObject>
                 }
                 <OptionButtons options={this.props.options} yCoordinate={yCoordinate} xCoordinate={xCoordinate}
-                               width={width} update={this.updateObject} clickFunction={this.state.clickFunction}/>
+                               width={width} update={this.updateObject} selectOption={this.props.selectOption}/>
             </g>
         );
     }
 }
 
-function needSlider(state) {
-        return state.options.map((element) => element.type)
-            .filter(x => x === OptionTypes.BET || x === OptionTypes.RAISE).length > 0;
-    }
+function needSlider(props) {
+    return props.options.map((element) => element.type)
+        .filter(x => x === OptionTypes.BET || x === OptionTypes.RAISE).length > 0;
+}
 
 
 
@@ -79,6 +79,7 @@ UserOptions.propTypes = {
     })),
     stackSize: PropTypes.number,
     stepSize: PropTypes.number,
+    selectOption: PropTypes.func,
 };
 
 

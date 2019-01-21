@@ -58,7 +58,8 @@ class Canvas extends Component {
 
                 { this.state.navigationSettings.inGame &&
                     <g>
-                        <Players players={gameState.players} lastActionAmounts={gameState.lastActionAmounts}/>
+                        <Players players={gameState.players} lastActionAmounts={gameState.lastActionAmounts}
+                                 numberOfCards={gameState.userCards.length}/>
                         <CommunityCards cards={gameState.communityCards} raiseCards={gameState.raiseCommunityCards}/>
                     </g>
                 }
@@ -68,7 +69,8 @@ class Canvas extends Component {
                         <UserCards cards={gameState.userCards} raiseCards={gameState.raiseUserCards}
                                    foldedCard={gameState.userHasFolded} lastActionAmount={gameState.lastUserAmount}/>
                         <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
-                        <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}/>
+                        <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}
+                                     selectOption={this.state.selectOption}/>
                     </g>
                 }
 
@@ -136,6 +138,7 @@ Canvas.propTypes = {
     loggedIn: PropTypes.func.isRequired,
     joinGame: PropTypes.func.isRequired,
     gameUpdate: PropTypes.func.isRequired,
+    selectOption: PropTypes.func,
 };
 
 

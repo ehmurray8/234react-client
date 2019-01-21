@@ -52,13 +52,18 @@ function refresh(maxSeconds) {
     let intervalId = setInterval(() => {
         barHeight -= decrement;
         const barElement = document.getElementById("bar");
-        barElement.style.height = barHeight + "px";
-        if (barHeight <= lowZone) {
-            barElement.style.background = 'red';
-        }
-        if (barHeight <= 0) {
+        if (barElement == null) {
             clearInterval(intervalId);
+        } else {
+            barElement.style.height = barHeight + "px";
+            if (barHeight <= lowZone) {
+                barElement.style.background = 'red';
+            }
+            if (barHeight <= 0) {
+                clearInterval(intervalId);
+            }
         }
+
     }, interval);
 }
 

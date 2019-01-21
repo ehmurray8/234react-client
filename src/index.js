@@ -3,16 +3,19 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import './index.css';
 import Game from './containers/Game';
-import { store, persistor } from './configureStore';
 import * as serviceWorker from './serviceWorker';
-import { PersistGate } from "redux-persist/integration/react";
+import {createStore} from "redux";
+import reducer from "./reducers";
 
+
+const store = createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
 
 ReactDOM.render(
     <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-            <Game />
-        </PersistGate>
+        <Game />
     </Provider>,
 
     document.getElementById('root'),

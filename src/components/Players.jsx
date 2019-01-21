@@ -31,9 +31,10 @@ const Players = (props) => {
         <g>
             { props.players.map((player, index) => (
                 <Player key={player.name} xCoordinate={coordinates[index][0]} yCoordinate={coordinates[index][1]}
-                        player={player} raiseCards={player.raiseCards} lastAction={{amount: props.lastActionAmounts[index],
-                                                                                    xCoordinate: lastActionCoordinates[index][0],
-                                                                                    yCoordinate: lastActionCoordinates[index][1]}}/>
+                        numberOfCards={props.numberOfCards} player={player}
+                        raiseCards={player.raiseCards} lastAction={{amount: props.lastActionAmounts[index],
+                                                                    xCoordinate: lastActionCoordinates[index][0],
+                                                                    yCoordinate: lastActionCoordinates[index][1]}}/>
             )) }
         </g>
     );
@@ -48,6 +49,7 @@ Players.propTypes = {
         raiseCards: PropTypes.arrayOf(PropTypes.bool.isRequired).isRequired,
     })),
     lastActionAmounts: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
+    numberOfCards: PropTypes.number.isRequired,
 };
 
 

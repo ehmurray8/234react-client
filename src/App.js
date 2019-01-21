@@ -36,7 +36,17 @@ class App extends Component {
                 query: `token=${Auth0.getAccessToken()}`,
             });
 
+            socket.emit("welcomeStatus", {
+                username: currentPlayer.username,
+            });
+
+            socket.on('returnToGame', payload => {
+                console.log(payload);
+                this.props.joinGame();
+            });
+
             socket.on('gameUpdate', payload => {
+                console.log(payload);
                 this.props.gameUpdate(payload);
             });
 
@@ -58,6 +68,7 @@ class App extends Component {
     }
 
     render() {
+        console.log(this.props);
         return (
             <Canvas {...this.props} />
         );
@@ -112,6 +123,7 @@ App.propTypes = {
     loggedIn: PropTypes.func.isRequired,
     joinGame: PropTypes.func.isRequired,
     gameUpdate: PropTypes.func.isRequired,
+    selectOption: PropTypes.func,
 };
 
 

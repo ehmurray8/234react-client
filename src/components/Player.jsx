@@ -17,8 +17,12 @@ const Player = (props) => {
     const radius = 20;
     const width = playerBoxWidth / 2 - 7;
     const height = playerBoxHeight * 2;
-    const numberOfCards = props.player.cards.length;
-    const cards = props.player.cards;
+    const numberOfCards = props.numberOfCards;
+    let cards = props.player.cards;
+
+    if (!cards || cards.length === 0) {
+        cards = Array(numberOfCards);
+    }
 
     let spacing = width;
     if (numberOfCards > 2) {
@@ -61,6 +65,7 @@ Player.propTypes = {
         xCoordinate: PropTypes.number.isRequired,
         yCoordinate: PropTypes.number.isRequired,
     }),
+    numberOfCards: PropTypes.number.isRequired,
 };
 
 

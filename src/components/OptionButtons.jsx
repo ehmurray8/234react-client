@@ -5,25 +5,15 @@ import Option from "./Option";
 
 class OptionButtons extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            ...props,
-        };
-        this.state.update.updateFunction = () => {
-            this.setState(this.state);
-        }
-    }
-
     render() {
         return (
             <g>
                 {
-                    this.state.options.map((option, index) =>
+                    this.props.options.map((option, index) =>
                         <Option key={option.type + option.amount} option={option}
-                                xCoordinate={this.state.xCoordinate + index * (this.state.width + 5)}
-                                yCoordinate={this.state.yCoordinate}
-                                width={this.state.width}/>
+                                xCoordinate={this.props.xCoordinate + index * (this.props.width + 5)}
+                                yCoordinate={this.props.yCoordinate}
+                                width={this.props.width} selectOption={this.props.selectOption}/>
                     )
                 }
             </g>
@@ -39,9 +29,7 @@ OptionButtons.propTypes = {
         amount: PropTypes.number.isRequired,
         type: PropTypes.string.isRequired,
     })),
-    update: PropTypes.shape({
-        updateFunction: PropTypes.func.isRequired,
-    }).isRequired,
+    selectOption: PropTypes.func,
 };
 
 
