@@ -20,7 +20,7 @@ const Player = (props) => {
     const numberOfCards = props.numberOfCards;
     let cards = props.player.cards;
 
-    if (!cards || cards.length === 0) {
+    if (cards.length === 0) {
         cards = Array(numberOfCards);
     }
 

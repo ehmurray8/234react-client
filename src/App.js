@@ -41,12 +41,10 @@ class App extends Component {
             });
 
             socket.on('returnToGame', payload => {
-                console.log(payload);
                 this.props.joinGame();
             });
 
             socket.on('gameUpdate', payload => {
-                console.log(payload);
                 this.props.gameUpdate(payload);
             });
 
@@ -68,7 +66,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <Canvas {...this.props} />
         );

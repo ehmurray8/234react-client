@@ -36,8 +36,8 @@ class UserOptions extends Component {
         const yCoordinate = 880;
 
         let minValue = 0;
-        if (needSlider(this.state)) {
-            minValue = this.state.options.filter(x => x.type === OptionTypes.RAISE)[0].amount;
+        if (needSlider(this.props)) {
+            minValue = this.props.options.filter(x => x.type === OptionTypes.RAISE)[0].amount;
         }
 
         const sliderWidth = 400;
@@ -54,8 +54,8 @@ class UserOptions extends Component {
             <g>
                 { needSlider(this.props) &&
                     <foreignObject x={xCoordinate} y={yCoordinate - 50} width={sliderWidth} height={sliderHeight}>
-                        <input id='bet-slider' type="range" min={minValue} max={this.state.stackSize} step={this.state.stepSize}
-                               style={sliderStyle} defaultValue={minValue} onChange={() => this.reload(this.state)}/>
+                        <input id='bet-slider' type="range" min={minValue} max={this.props.stackSize} step={this.props.stepSize}
+                               style={sliderStyle} defaultValue={minValue} onChange={() => this.reload(this.props)}/>
                     </foreignObject>
                 }
                 <OptionButtons options={this.props.options} yCoordinate={yCoordinate} xCoordinate={xCoordinate}
