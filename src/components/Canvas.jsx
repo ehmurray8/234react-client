@@ -69,8 +69,11 @@ class Canvas extends Component {
                                    foldedCard={gameState.userHasFolded} lastActionAmount={gameState.lastUserAmount}/>
                         <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
                         <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}/>
-                        <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
                     </g>
+                }
+
+                { this.state.navigationSettings.isPlaying && this.state.gameState.options.length > 0 &&
+                    <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
                 }
 
                 { !this.state.navigationSettings.loggedIn &&

@@ -36,6 +36,10 @@ class App extends Component {
                 query: `token=${Auth0.getAccessToken()}`,
             });
 
+            socket.on('gameUpdate', payload => {
+                this.props.gameUpdate(payload);
+            });
+
             this.props.loggedIn(currentPlayer, socket);
         });
 
