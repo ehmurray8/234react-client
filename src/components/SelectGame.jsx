@@ -17,7 +17,6 @@ const SelectGame = (props) => {
         onClick: props.joinGame,
     };
 
-
     const text = {
         textAnchor: 'middle',
         x: 0,
@@ -30,7 +29,6 @@ const SelectGame = (props) => {
         },
         onClick: props.joinGame,
     };
-
 
     return (
         <g filter="url(#shadow)">

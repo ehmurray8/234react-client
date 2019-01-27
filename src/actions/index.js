@@ -2,6 +2,7 @@ export const LOGGED_IN = 'LOGGED_IN';
 export const JOIN_GAME = 'JOIN_GAME';
 export const GAME_UPDATE = 'GAME_UPDATE';
 export const SELECT_OPTION = 'SELECT_OPTION';
+export const LEAVE_GAME = 'LEAVE_GAME';
 
 
 export const loggedIn = (player, socket) => ({
@@ -17,6 +18,10 @@ export const joinGame = () => ({
 export const gameUpdate = (payload) => ({
     type: GAME_UPDATE,
     payload: payload,
+});
+
+export const leaveGame = () => ({
+    type: LEAVE_GAME
 });
 
 export const selectOption = (type, amount) => ({

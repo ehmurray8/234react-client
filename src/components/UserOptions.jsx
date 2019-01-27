@@ -9,9 +9,7 @@ class UserOptions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            options: props.options,
-            stackSize: props.stackSize,
-            stepSize: props.stepSize,
+            ...props
         };
         this.updateObject = {
             updateFunction: () => {},
@@ -37,7 +35,7 @@ class UserOptions extends Component {
 
         let minValue = 0;
         if (needSlider(this.props)) {
-            minValue = this.props.options.filter(x => x.type === OptionTypes.RAISE)[0].amount;
+            minValue = this.props.options.filter(x => x.type === OptionTypes.RAISE || x.type === OptionTypes.BET)[0].amount;
         }
 
         const sliderWidth = 400;

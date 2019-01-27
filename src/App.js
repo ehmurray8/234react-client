@@ -34,6 +34,7 @@ class App extends Component {
 
             const socket = io(SERVER_URL, {
                 query: `token=${Auth0.getAccessToken()}`,
+                'force new connection': true,
             });
 
             socket.emit("welcomeStatus", {
@@ -46,6 +47,11 @@ class App extends Component {
 
             socket.on('gameUpdate', payload => {
                 this.props.gameUpdate(payload);
+            });
+
+            socket.on('disconnect', () => {
+                // this.props.leaveGame();
+                console.log("Leave game");
             });
 
             this.props.loggedIn(currentPlayer, socket);
@@ -81,7 +87,7 @@ App.propTypes = {
             cards: PropTypes.arrayOf(PropTypes.shape({
                 rank: PropTypes.string.isRequired,
                 suit: PropTypes.string.isRequired,
-            })).isRequired,
+            })),
         })).isRequired,
         communityCards: PropTypes.arrayOf(PropTypes.shape({
             rank: PropTypes.string.isRequired,
@@ -96,14 +102,14 @@ App.propTypes = {
         username: PropTypes.string.isRequired,
         options: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
-            amount: PropTypes.number.isRequired,
-        })).isRequired,
+            amount: PropTypes.number.isRequired, })).isRequired,
         lastUserAmount: PropTypes.number.isRequired,
         raiseCommunityCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         raiseUserCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         userHasFolded: PropTypes.bool.isRequired,
         decisionTimeMaxSeconds: PropTypes.number.isRequired,
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
+        numberOfCards: PropTypes.number,
     }).isRequired,
     navigationSettings: PropTypes.shape({
         loggedIn: PropTypes.bool.isRequired,
@@ -120,6 +126,7 @@ App.propTypes = {
     loggedIn: PropTypes.func.isRequired,
     joinGame: PropTypes.func.isRequired,
     gameUpdate: PropTypes.func.isRequired,
+    leaveGame: PropTypes.func.isRequired,
     selectOption: PropTypes.func,
 };
 

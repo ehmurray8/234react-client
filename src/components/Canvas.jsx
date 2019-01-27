@@ -59,7 +59,7 @@ class Canvas extends Component {
                 { this.state.navigationSettings.inGame &&
                     <g>
                         <Players players={gameState.players} lastActionAmounts={gameState.lastActionAmounts}
-                                 numberOfCards={gameState.userCards.length}/>
+                                 numberOfCards={gameState.numberOfCards}/>
                         <CommunityCards cards={gameState.communityCards} raiseCards={gameState.raiseCommunityCards}/>
                     </g>
                 }
@@ -99,7 +99,7 @@ Canvas.propTypes = {
             cards: PropTypes.arrayOf(PropTypes.shape({
                 rank: PropTypes.string.isRequired,
                 suit: PropTypes.string.isRequired,
-            })).isRequired,
+            })),
         })).isRequired,
         communityCards: PropTypes.arrayOf(PropTypes.shape({
             rank: PropTypes.string.isRequired,
@@ -122,6 +122,7 @@ Canvas.propTypes = {
         userHasFolded: PropTypes.bool.isRequired,
         decisionTimeMaxSeconds: PropTypes.number.isRequired,
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
+        numberOfCards: PropTypes.number,
     }).isRequired,
     navigationSettings: PropTypes.shape({
         loggedIn: PropTypes.bool.isRequired,

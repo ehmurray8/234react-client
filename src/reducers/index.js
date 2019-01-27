@@ -1,5 +1,5 @@
 import {OptionTypes} from "../utils/constants";
-import {GAME_UPDATE, JOIN_GAME, LOGGED_IN, SELECT_OPTION} from "../actions";
+import {GAME_UPDATE, JOIN_GAME, LEAVE_GAME, LOGGED_IN, SELECT_OPTION} from "../actions";
 
 const defaultCards = [null, null];
 const userStackSize = 250;
@@ -95,6 +95,7 @@ function reducer(state = initialState, action) {
             };
         case JOIN_GAME:
             state.socket.emit("joinGame", state.currentPlayer);
+            console.log("join game");
             return {
                 ...state,
                 navigationSettings: {
@@ -106,6 +107,7 @@ function reducer(state = initialState, action) {
         case GAME_UPDATE:
             const socket = state.socket;
             const eventId = action.payload.eventId;
+            console.log("Game update");
             return {
                 ...state,
                 gameState: action.payload,
@@ -131,6 +133,16 @@ function reducer(state = initialState, action) {
                     options: [],
                 }
             };
+        case LEAVE_GAME:
+            return {
+                ...state,
+                navigationSettings: {
+                    inGame: false,
+                    isPlaying: false,
+                    loggedIn: true,
+                    isSpectator: false,
+                }
+            }
         default:
             return state;
     }

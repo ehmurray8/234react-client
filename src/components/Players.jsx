@@ -47,9 +47,13 @@ Players.propTypes = {
         name: PropTypes.string.isRequired,
         balance: PropTypes.number.isRequired,
         raiseCards: PropTypes.arrayOf(PropTypes.bool.isRequired).isRequired,
+        cards: PropTypes.arrayOf(PropTypes.shape({
+            suit: PropTypes.string.isRequired,
+            rank: PropTypes.string.isRequired,
+        })),
     })),
     lastActionAmounts: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-    numberOfCards: PropTypes.number.isRequired,
+    numberOfCards: PropTypes.number,
 };
 
 

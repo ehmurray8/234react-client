@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import App from '../App';
-import {gameUpdate, joinGame, loggedIn, selectOption} from "../actions";
+import {gameUpdate, joinGame, loggedIn, selectOption, leaveGame} from "../actions";
 
 
 const mapStateToProps = state => ({
@@ -21,6 +21,9 @@ const mapDispatchToProps = dispatch => ({
     selectOption: (type, amount) => {
         dispatch(selectOption(type, amount));
     },
+    leaveGame: () => {
+        dispatch(leaveGame());
+    }
 });
 
 

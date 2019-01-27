@@ -17,10 +17,10 @@ const Player = (props) => {
     const radius = 20;
     const width = playerBoxWidth / 2 - 7;
     const height = playerBoxHeight * 2;
-    const numberOfCards = props.numberOfCards;
+    const numberOfCards = props.numberOfCards || 0;
     let cards = props.player.cards;
 
-    if (cards.length === 0) {
+    if (cards && cards.length === 0) {
         cards = Array(numberOfCards);
     }
 
@@ -31,7 +31,7 @@ const Player = (props) => {
 
     return (
         <g>
-            { Array(numberOfCards).fill(0).map((x, y) => x + y).map((value, index) => (
+            { cards && Array(numberOfCards).fill(0).map((x, y) => x + y).map((value, index) => (
                 <Card key={index} card={cards[index]} xCoordinate={xCoordinate + index * spacing}
                       yCoordinate={yCoordinate} width={width} height={height} raiseCard={props.raiseCards[index]}/>
             ))}
@@ -47,7 +47,6 @@ const Player = (props) => {
     );
 };
 
-
 Player.propTypes = {
     xCoordinate: PropTypes.number.isRequired,
     yCoordinate: PropTypes.number.isRequired,
@@ -57,11 +56,11 @@ Player.propTypes = {
         cards: PropTypes.arrayOf(PropTypes.shape({
             suit: PropTypes.string.isRequired,
             rank: PropTypes.string.isRequired,
-        })).isRequired,
+        })),
     }).isRequired,
     raiseCards: PropTypes.arrayOf(PropTypes.bool.isRequired),
     lastAction: PropTypes.shape({
-        amount: PropTypes.number.isRequired,
+        amount: PropTypes.number,
         xCoordinate: PropTypes.number.isRequired,
         yCoordinate: PropTypes.number.isRequired,
     }),

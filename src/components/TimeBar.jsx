@@ -20,8 +20,8 @@ const TimeBar = (props) => {
         background: 'green',
     };
 
-    const xCoordinate = -475 - width;
-    const yCoordinate = 800;
+    const xCoordinate = -475 - width - 5;
+    const yCoordinate = 805;
 
     if (props.maxSeconds) {
         refresh(props.maxSeconds);
