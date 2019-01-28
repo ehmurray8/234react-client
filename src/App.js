@@ -50,8 +50,7 @@ class App extends Component {
             });
 
             socket.on('disconnect', () => {
-                // this.props.leaveGame();
-                console.log("Leave game");
+                this.props.leaveGame();
             });
 
             this.props.loggedIn(currentPlayer, socket);
@@ -107,9 +106,11 @@ App.propTypes = {
         raiseCommunityCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         raiseUserCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         userHasFolded: PropTypes.bool.isRequired,
+        decisionEndTime: PropTypes.number.isRequired,
         decisionTimeMaxSeconds: PropTypes.number.isRequired,
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
         numberOfCards: PropTypes.number,
+        betStepSize: PropTypes.number,
     }).isRequired,
     navigationSettings: PropTypes.shape({
         loggedIn: PropTypes.bool.isRequired,

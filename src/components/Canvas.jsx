@@ -69,13 +69,13 @@ class Canvas extends Component {
                         <UserCards cards={gameState.userCards} raiseCards={gameState.raiseUserCards}
                                    foldedCard={gameState.userHasFolded} lastActionAmount={gameState.lastUserAmount}/>
                         <UserInfo stackSize={gameState.userStackSize} username={gameState.username}/>
-                        <UserOptions options={gameState.options} stackSize={gameState.userStackSize} stepSize={1}
-                                     selectOption={this.state.selectOption}/>
+                        <UserOptions options={gameState.options} stackSize={gameState.userStackSize}
+                                     stepSize={gameState.betStepSize} selectOption={this.state.selectOption}/>
                     </g>
                 }
 
                 { this.state.navigationSettings.isPlaying && this.state.gameState.options.length > 0 &&
-                    <TimeBar maxSeconds={gameState.decisionTimeMaxSeconds}/>
+                    <TimeBar endTime={gameState.decisionEndTime} maxSeconds={gameState.decisionTimeMaxSeconds}/>
                 }
 
                 { !this.state.navigationSettings.loggedIn &&
@@ -120,9 +120,11 @@ Canvas.propTypes = {
         raiseCommunityCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         raiseUserCards: PropTypes.arrayOf(PropTypes.bool).isRequired,
         userHasFolded: PropTypes.bool.isRequired,
+        decisionEndTime: PropTypes.number.isRequired,
         decisionTimeMaxSeconds: PropTypes.number.isRequired,
         lastActionAmounts: PropTypes.arrayOf(PropTypes.number).isRequired,
         numberOfCards: PropTypes.number,
+        betStepSize: PropTypes.number,
     }).isRequired,
     navigationSettings: PropTypes.shape({
         loggedIn: PropTypes.bool.isRequired,

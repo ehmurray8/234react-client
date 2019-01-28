@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 const height = 175;
 const width = 50;
 
+let intervalId;
+
 const TimeBar = (props) => {
     const outerStyle = {
         width: width,
@@ -20,16 +22,19 @@ const TimeBar = (props) => {
         background: 'green',
     };
 
-    const xCoordinate = -475 - width - 5;
-    const yCoordinate = 805;
+    const xCoordinate = -475 - width;
+    const yCoordinate = 800;
 
-    if (props.maxSeconds) {
-        refresh(props.maxSeconds);
+    const currentTimestamp = new Date().getTime();
+    if (props.endTime && props.maxSeconds && props.endTime - currentTimestamp > 0) {
+        refresh(props.endTime, props.maxSeconds);
+    } else {
+        document.getElementById('bar').style.height = 0;
     }
 
     return (
         <g>
-           { props.maxSeconds &&
+           { props.endTime && props.endTime - currentTimestamp > 0 &&
                 <foreignObject x={xCoordinate} y={yCoordinate} height={height} width={width}>
                     <div style={outerStyle}>
                         <div id="bar" style={barStyle}/>
@@ -41,15 +46,24 @@ const TimeBar = (props) => {
 };
 
 
-function refresh(maxSeconds) {
+function refresh(endTime, maxSeconds) {
     let barHeight = height;
     const interval = 500;
     const multiplier = 1000 / interval;
 
-    const decrement = height / (maxSeconds * multiplier);
+    const currentTimestamp = new Date().getTime();
+    const timeLeft = Math.floor((endTime - currentTimestamp) / 1000);
+
+    barHeight = Math.floor(height * (timeLeft / maxSeconds));
+
+    const decrement = height / (timeLeft * multiplier);
     const lowZone = height * .4;
 
-    let intervalId = setInterval(() => {
+    if (intervalId) {
+        clearInterval(intervalId);
+    }
+
+    intervalId = setInterval(() => {
         barHeight -= decrement;
         const barElement = document.getElementById("bar");
         if (barElement == null) {
@@ -69,6 +83,7 @@ function refresh(maxSeconds) {
 
 
 TimeBar.propTypes = {
+    endTime: PropTypes.number,
     maxSeconds: PropTypes.number,
 };
 

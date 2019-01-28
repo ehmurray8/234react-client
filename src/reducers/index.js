@@ -52,6 +52,7 @@ const initialGameState = {
     raiseUserCards: [],
     userHasFolded: false,
     decisionTimeMaxSeconds: 0,
+    decisionEndTime: 0,
     lastActionAmounts: [],
 };
 
@@ -95,7 +96,6 @@ function reducer(state = initialState, action) {
             };
         case JOIN_GAME:
             state.socket.emit("joinGame", state.currentPlayer);
-            console.log("join game");
             return {
                 ...state,
                 navigationSettings: {
@@ -107,7 +107,6 @@ function reducer(state = initialState, action) {
         case GAME_UPDATE:
             const socket = state.socket;
             const eventId = action.payload.eventId;
-            console.log("Game update");
             return {
                 ...state,
                 gameState: action.payload,
@@ -142,7 +141,7 @@ function reducer(state = initialState, action) {
                     loggedIn: true,
                     isSpectator: false,
                 }
-            }
+            };
         default:
             return state;
     }
