@@ -32,6 +32,8 @@ class App extends Component {
                 username: playerProfile.nickname,
             };
 
+            console.log("Authorized");
+
             const socket = io(SERVER_URL, {
                 query: `token=${Auth0.getAccessToken()}`,
                 'force new connection': true,
@@ -42,10 +44,12 @@ class App extends Component {
             });
 
             socket.on('returnToGame', payload => {
+                console.log("Returning to game");
                 this.props.joinGame();
             });
 
             socket.on('gameUpdate', payload => {
+                console.log("Game Update");
                 this.props.gameUpdate(payload);
             });
 

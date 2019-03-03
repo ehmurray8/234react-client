@@ -96,6 +96,7 @@ function reducer(state = initialState, action) {
             };
         case JOIN_GAME:
             state.socket.emit("joinGame", state.currentPlayer);
+            console.log("Joining game");
             return {
                 ...state,
                 navigationSettings: {
@@ -110,12 +111,6 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 gameState: action.payload,
-                navigationSettings: {
-                    inGame: true,
-                    isPlaying: true,
-                    loggedIn: true,
-                    isSpectator: false,
-                },
                 sendOption: (type, amount) => {
                     socket.emit('option' + eventId, {
                         type: type,
@@ -125,6 +120,7 @@ function reducer(state = initialState, action) {
             };
         case SELECT_OPTION:
             state.sendOption(action.optionType, action.optionAmount);
+            console.log("Sending option via " + state.socket.id);
             return {
                 ...state,
                 gameState: {
@@ -136,9 +132,9 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 navigationSettings: {
+                    ...state.navigationSettings,
                     inGame: false,
                     isPlaying: false,
-                    loggedIn: true,
                     isSpectator: false,
                 }
             };

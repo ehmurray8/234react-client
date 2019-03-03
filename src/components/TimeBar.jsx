@@ -29,7 +29,9 @@ const TimeBar = (props) => {
     if (props.endTime && props.maxSeconds && props.endTime - currentTimestamp > 0) {
         refresh(props.endTime, props.maxSeconds);
     } else {
-        document.getElementById('bar').style.height = 0;
+        try {
+            document.getElementById('bar').style.height = "0";
+        } catch (err) {};
     }
 
     return (
@@ -65,8 +67,12 @@ function refresh(endTime, maxSeconds) {
 
     intervalId = setInterval(() => {
         barHeight -= decrement;
-        const barElement = document.getElementById("bar");
-        if (barElement == null) {
+        let barElement;
+        try {
+            barElement = document.getElementById("bar");
+        } catch (err) { }
+
+        if (!barElement) {
             clearInterval(intervalId);
         } else {
             barElement.style.height = barHeight + "px";
