@@ -12,8 +12,8 @@ const mapDispatchToProps = dispatch => ({
     loggedIn: (player, socket) => {
         dispatch(loggedIn(player, socket));
     },
-    joinGame: () => {
-        dispatch(joinGame());
+    joinGame: (gameId) => {
+        dispatch(joinGame(gameId));
     },
     gameUpdate: (payload) => {
         dispatch(gameUpdate(payload));

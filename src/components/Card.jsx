@@ -31,7 +31,7 @@ const Card = (props) => {
             <defs>
                 <pattern id={"attachedImage" + identifier} height="100%" width="100%" patternContentUnits="objectBoundingBox">
                     <image xlinkHref={imageUrl} preserveAspectRatio="none" width={1} height={1} />
-                </pattern>
+                </pattern>        var name = player.getName();
             </defs>
             <rect x={xCoordinate} y={yCoordinate} height={props.height} width={props.width}
                   fill={"url(#attachedImage" + identifier + ")"} style={style}/>

@@ -11,8 +11,9 @@ export const loggedIn = (player, socket) => ({
     socket: socket,
 });
 
-export const joinGame = () => ({
+export const joinGame = (gameId) => ({
     type: JOIN_GAME,
+    gameId: gameId
 });
 
 export const gameUpdate = (payload) => ({

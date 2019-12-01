@@ -7,13 +7,13 @@ export const playerBoxHeight = 100;
 export const playerBoxWidth = 250;
 
 export const OptionTypes = {
-    CHECK: "check",
-    FOLD: "fold",
-    CALL: "call",
-    BET: "bet",
-    RAISE: "raise",
-    ALLIN: "allin",
+    CHECK: "CHECK",
+    FOLD: "FOLD",
+    CALL: "CALL",
+    BET: "BET",
+    RAISE: "RAISE",
+    ALLIN: "ALLIN",
 };
 
 
-export const SERVER_URL = 'http://localhost:3001';
+export const SERVER_URL = 'http://192.168.0.163:3001';

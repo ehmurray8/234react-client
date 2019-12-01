@@ -40,6 +40,7 @@ const testGameState = {
 };
 
 const initialGameState = {
+    gameId: "",
     players : [],
     communityCards: [],
     mainPotAmount: 0,
@@ -96,9 +97,11 @@ function reducer(state = initialState, action) {
             };
         case JOIN_GAME:
             state.socket.emit("joinGame", state.currentPlayer);
-            console.log("Joining game");
+            console.log("Joining game...");
+            console.log(action.gameId);
             return {
                 ...state,
+                gameId: action.gameId,
                 navigationSettings: {
                     ...state.navigationSettings,
                     inGame: true,
@@ -111,15 +114,16 @@ function reducer(state = initialState, action) {
             return {
                 ...state,
                 gameState: action.payload,
-                sendOption: (type, amount) => {
-                    socket.emit('option' + eventId, {
+                sendOption: (type, amount, gameId) => {
+                    socket.emit('option' + gameId, {
+                        eventId: eventId,
                         type: type,
                         amount: amount
                     });
                 },
             };
         case SELECT_OPTION:
-            state.sendOption(action.optionType, action.optionAmount);
+            state.sendOption(action.optionType, action.optionAmount, state.gameId);
             console.log("Sending option via " + state.socket.id);
             return {
                 ...state,

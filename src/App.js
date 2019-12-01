@@ -10,7 +10,7 @@ import {SERVER_URL} from "./utils/constants";
 Auth0.configure({
     domain: 'ehmurray.auth0.com',
     clientID: 'Dw46VpZuEtCmd7NUjwfYGAsKg3KJu35p',
-    redirectUri: 'http://localhost:3000/',
+    redirectUri: 'http://192.168.0.163:3000',
     responseType: 'token id_token',
     scope: 'openid profile manage:points',
     audience: 'http://234-poker.com'
@@ -45,7 +45,7 @@ class App extends Component {
 
             socket.on('returnToGame', payload => {
                 console.log("Returning to game");
-                this.props.joinGame();
+                this.props.joinGame(payload.gameId);
             });
 
             socket.on('gameUpdate', payload => {

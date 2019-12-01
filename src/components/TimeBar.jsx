@@ -31,7 +31,7 @@ const TimeBar = (props) => {
     } else {
         try {
             document.getElementById('bar').style.height = "0";
-        } catch (err) {};
+        } catch (err) {}
     }
 
     return (

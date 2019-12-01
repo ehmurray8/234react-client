@@ -35,6 +35,7 @@ class Canvas extends Component {
 
         const viewBox = [gameWidth / -2, 0, gameWidth, gameHeight];
         const gameState = this.state.gameState;
+        console.log(this.state.gameState);
         return (
             <svg
                 id="main-canvas"
